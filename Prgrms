@@ -1,0 +1,187 @@
+Word Tokenization:
+def word_tokenize(text):
+    return text.split()
+
+text = "This is a simple example."
+tokens = word_tokenize(text)
+print(tokens)
+
+Sentence Tokenization:
+def sentence_tokenize(text):
+    return text.split('. ')
+
+text = "This is the first sentence. This is the second sentence."
+sentences = sentence_tokenize(text)
+print(sentences)
+
+2. Removing Punctuation:
+import string
+
+def remove_punctuation(text):
+    return text.translate(str.maketrans('', '', string.punctuation))
+
+text = "Hello, world! This is an example."
+clean_text = remove_punctuation(text)
+print(clean_text)
+
+3. Stop Words Removal
+
+stop_words = set(["is", "an", "a", "the"])
+
+def remove_stop_words(tokens):
+    return [word for word in tokens if word.lower() not in stop_words]
+
+tokens = ["This", "is", "a", "simple", "example"]
+filtered_tokens = remove_stop_words(tokens)
+print(filtered_tokens)
+
+4. Stemming (Porter Stemmer Algorithm Simplified)
+
+def porter_stem(word):
+    suffixes = ["ing", "ly", "ed", "ious", "ies", "ive", "es", "s", "ment"]
+    for suffix in suffixes:
+        if word.endswith(suffix):
+            return word[:-len(suffix)]
+    return word
+
+words = ["playing", "played", "plays", "player"]
+stemmed_words = [porter_stem(word) for word in words]
+print(stemmed_words)
+
+5. Part-of-Speech (POS) Tagging (Simple Heuristic)
+
+def pos_tag(tokens):
+    tags = []
+    for token in tokens:
+        if token.endswith('ing'):
+            tags.append((token, 'VBG'))  # Verb, Gerund
+        elif token.endswith('ed'):
+            tags.append((token, 'VBD'))  # Verb, Past Tense
+        elif token.endswith('s'):
+            tags.append((token, 'NNS'))  # Noun, Plural
+        else:
+            tags.append((token, 'NN'))  # Noun, Singular
+    return tags
+
+tokens = ["playing", "played", "plays", "player"]
+pos_tags = pos_tag(tokens)
+print(pos_tags)
+
+6. Simple Frequency Distribution
+def frequency_distribution(tokens):
+    freq_dist = {}
+    for token in tokens:
+        token = token.lower()
+        if token not in freq_dist:
+            freq_dist[token] = 1
+        else:
+            freq_dist[token] += 1
+    return freq_dist
+
+tokens = ["this", "is", "a", "simple", "example", "is", "example"]
+freq_dist = frequency_distribution(tokens)
+print(freq_dist)
+
+7. Basic Text Classification (Using Simple Rules)
+
+def classify_text(text):
+    positive_words = ['good', 'great', 'fantastic', 'amazing']
+    negative_words = ['bad', 'terrible', 'awful', 'horrible']
+    
+    text = text.lower()
+    if any(word in text for word in positive_words):
+        return 'Positive'
+    elif any(word in text for word in negative_words):
+        return 'Negative'
+    else:
+        return 'Neutral'
+
+text = "The movie was fantastic and amazing"
+classification = classify_text(text)
+print(classification)
+
+8. Named Entity Recognition (NER) (Simple Heuristic)
+def named_entity_recognition(text):
+    entities = []
+    words = text.split()
+    for word in words:
+        if word[0].isupper():
+            entities.append(word)
+    return entities
+
+text = "Barack Obama was the 44th President of the United States."
+entities = named_entity_recognition(text)
+print(entities)
+
+9.Simple Text Summarization (Extractive)
+def summarize_text(text, sentence_count=1):
+    sentences = text.split('. ')
+    if len(sentences) <= sentence_count:
+        return text
+    sentence_scores = {}
+    for sentence in sentences:
+        words = sentence.split()
+        for word in words:
+            if word.lower() not in stop_words:
+                if sentence not in sentence_scores:
+                    sentence_scores[sentence] = 1
+                else:
+                    sentence_scores[sentence] += 1
+    sorted_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)
+    summary = '. '.join(sorted_sentences[:sentence_count])
+    return summary
+
+text = "Natural language processing (NLP) is a field of artificial intelligence that focuses on the interaction between computers and humans. NLP combines computational linguistics with machine learning. It enables machines to understand and generate human language. Applications of NLP include translation, sentiment analysis, and chatbots."
+summary = summarize_text(text, 2)
+print(summary)
+
+10.simple chatbot 
+def chatbot_response(user_input):
+    user_input = user_input.lower()
+    if 'hello' in user_input:
+        return "Hello! How can I assist you today?"
+    elif 'bye' in user_input:
+        return "Goodbye! Have a great day!"
+    elif 'name' in user_input:
+        return "I am a simple chatbot created for demonstration purposes."
+    else:
+        return "I'm sorry, I don't understand that. Can you please rephrase?"
+
+user_input = input("You: ")
+response = chatbot_response(user_input)
+print("Chatbot:", response)
+
+11.word freq counter
+def word_frequency_counter(text):
+    frequency = {}
+    words = text.split()
+    for word in words:
+        word = word.lower().strip(string.punctuation)
+        if word:
+            if word in frequency:
+                frequency[word] += 1
+            else:
+                frequency[word] = 1
+    return frequency
+
+text = "This is a test. This test is only a test."
+word_freq = word_frequency_counter(text)
+print(word_freq)
+
+12.bigram frequency 
+def bigram_frequency_counter(text):
+    bigrams = {}
+    words = text.split()
+    for i in range(len(words) - 1):
+        bigram = (words[i].lower(), words[i + 1].lower())
+        if bigram in bigrams:
+            bigrams[bigram] += 1
+        else:
+            bigrams[bigram] = 1
+    return bigrams
+
+text = "This is a test. This test is only a test."
+bigram_freq = bigram_frequency_counter(text)
+print(bigram_freq)
+
+
