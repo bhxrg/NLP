@@ -1,0 +1,342 @@
+stopwords
+import string
+
+# Define a set of stop words
+stop_words = set([
+    "the", "is", "in", "a", "an", "of", "and", "to", "it", "he", "she", "they", 
+    "we", "you", "that", "this", "with", "for", "on", "at", "by", "from", "as", 
+    "was", "were", "be", "been", "being", "have", "has", "had", "do", "does", 
+    "did", "but", "if", "or", "because", "about", "into", "through", "during", 
+    "before", "after", "above", "below", "up", "down", "out", "off", "over", 
+    "under", "again", "further", "then", "once", "here", "there", "when", 
+    "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", 
+    "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", 
+    "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", 
+    "now"
+])
+
+# Sample text
+text = """
+The quick brown fox jumps over the lazy dog. 
+He is known for his agility and speed.
+"""
+
+# Step 1: Tokenize the text into words
+def tokenize(text):
+    # Convert to lowercase
+    text = text.lower()
+    # Remove punctuation
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    # Split into words
+    words = text.split()
+    return words
+
+# Step 2: Remove stop words
+def remove_stop_words(words):
+    filtered_words = [word for word in words if word not in stop_words]
+    return filtered_words
+
+# Execute the steps
+words = tokenize(text)
+filtered_words = remove_stop_words(words)
+
+# Print the filtered words
+print("Original words:", words)
+print("Filtered words:", filtered_words)
+
+
+bag of words
+# Sample documents
+documents = [
+    "The cat chased the mouse around the house.",
+    "Birds fly high in the sky.",
+    "The quick brown fox jumps over the lazy dog."
+]
+
+# Step 1: Tokenize the documents into words
+def tokenize(document):
+    document = document.lower()
+    document = document.translate(str.maketrans('', '', string.punctuation))
+    words = document.split()
+    return words
+
+# Step 2: Build vocabulary
+def build_vocabulary(documents):
+    vocabulary = set()
+    for document in documents:
+        words = tokenize(document)
+        vocabulary.update(words)
+    return sorted(vocabulary)
+
+# Step 3: Vectorize documents
+def vectorize(document, vocabulary):
+    words = tokenize(document)
+    vector = [0] * len(vocabulary)
+    for word in words:
+        if word in vocabulary:
+            index = vocabulary.index(word)
+            vector[index] += 1
+    return vector
+
+# Execute the steps
+vocabulary = build_vocabulary(documents)
+print(f"Vocabulary: {vocabulary}")
+
+vectors = [vectorize(doc, vocabulary) for doc in documents]
+for i, vector in enumerate(vectors):
+    print(f"Document {i+1} Vector: {vector}")
+
+text classification
+# Sample text and predefined categories
+documents = [
+    "The cat chased the mouse around the house.",
+    "Birds fly high in the sky.",
+    "The quick brown fox jumps over the lazy dog."
+]
+
+categories = [
+    ["cat", "mouse", "house", "fox", "dog"],  # Animals
+    ["birds", "fly", "sky", "high"]           # Birds
+]
+
+# Step 1: Tokenize and build vocabulary
+def tokenize(document):
+    document = document.lower()
+    document = document.translate(str.maketrans('', '', string.punctuation))
+    words = document.split()
+    return words
+
+def build_vocabulary(documents):
+    vocabulary = set()
+    for document in documents:
+        words = tokenize(document)
+        vocabulary.update(words)
+    return sorted(vocabulary)
+
+# Step 2: Vectorize documents
+def vectorize(document, vocabulary):
+    words = tokenize(document)
+    vector = [0] * len(vocabulary)
+    for word in words:
+        if word in vocabulary:
+            index = vocabulary.index(word)
+            vector[index] += 1
+    return vector
+
+# Step 3: Classify document
+def classify(document_vector, category_vectors):
+    scores = [0] * len(category_vectors)
+    for i, category_vector in enumerate(category_vectors):
+        for j in range(len(category_vector)):
+            scores[i] += document_vector[j] * category_vector[j]
+    return scores.index(max(scores))
+
+# Execute the steps
+vocabulary = build_vocabulary(documents)
+category_vectors = [vectorize(" ".join(cat), vocabulary) for cat in categories]
+
+document_vectors = [vectorize(doc, vocabulary) for doc in documents]
+for i, doc_vector in enumerate(document_vectors):
+    category_index = classify(doc_vector, category_vectors)
+    print(f"Document {i+1} classified as category {category_index}")
+
+import string
+
+# Sample text
+text = "The cat chased the mouse around the house. Birds fly high in the sky. The quick brown fox jumps over the lazy dog."
+
+# Tokenize text into sentences
+def tokenize_sentences(text):
+    sentences = text.split('.')
+    sentences = [s.strip() for s in sentences if s]
+    return sentences
+
+# Tokenize a sentence into words
+def tokenize_words(sentence):
+    sentence = sentence.lower()
+    sentence = sentence.translate(str.maketrans('', '', string.punctuation))
+    words = sentence.split()
+    return words
+
+# Execute tokenization
+sentences = tokenize_sentences(text)
+for sentence in sentences:
+    words = tokenize_words(sentence)
+    print(f"Sentence: {sentence}")
+    print(f"Words: {words}")
+import string
+
+
+#parsing
+# Sample text
+text = "The cat chased the mouse around the house. Birds fly high in the sky. The quick brown fox jumps over the lazy dog."
+
+# Tokenize text into sentences
+def tokenize_sentences(text):
+    sentences = text.split('.')
+    sentences = [s.strip() for s in sentences if s]
+    return sentences
+
+# Tokenize a sentence into words
+def tokenize_words(sentence):
+    sentence = sentence.lower()
+    sentence = sentence.translate(str.maketrans('', '', string.punctuation))
+    words = sentence.split()
+    return words
+
+# Execute tokenization
+sentences = tokenize_sentences(text)
+for sentence in sentences:
+    words = tokenize_words(sentence)
+    print(f"Sentence: {sentence}")
+    print(f"Words: {words}")
+
+q-A model
+import string
+
+# Sample text and question
+text = """
+The cat chased the mouse around the house. Birds fly high in the sky. The quick brown fox jumps over the lazy dog.
+Cats are known for their agility and hunting skills.
+"""
+
+question = "What do cats do?"
+
+# Step 1: Tokenize the text into sentences and words
+def tokenize_text(text):
+    sentences = text.split('.')
+    sentences = [s.strip() for s in sentences if s]
+    return sentences
+
+def tokenize_sentence(sentence):
+    sentence = sentence.lower()
+    sentence = sentence.translate(str.maketrans('', '', string.punctuation))
+    words = sentence.split()
+    return words
+
+# Step 2: Extract keywords from the question
+def extract_keywords(question):
+    question = question.lower()
+    question = question.translate(str.maketrans('', '', string.punctuation))
+    keywords = question.split()
+    stop_words = set(["the", "is", "in", "a", "an", "of", "and", "to", "do", "what"])
+    keywords = [word for word in keywords if word not in stop_words]
+    return keywords
+
+# Step 3: Find the most relevant sentence
+def find_relevant_sentence(sentences, keywords):
+    best_sentence = None
+    max_keyword_count = 0
+
+    for sentence in sentences:
+        words = tokenize_sentence(sentence)
+        keyword_count = sum(1 for word in words if word in keywords)
+        if keyword_count > max_keyword_count:
+            max_keyword_count = keyword_count
+            best_sentence = sentence
+
+    return best_sentence
+
+# Execute the steps
+sentences = tokenize_text(text)
+keywords = extract_keywords(question)
+answer = find_relevant_sentence(sentences, keywords)
+
+# Print the answer
+print(f"Question: {question}")
+print(f"Answer: {answer}")
+
+
+dependency parser
+# Sample sentence
+sentence = "The cat chased the mouse."
+
+# Step 1: Tokenize the sentence
+def tokenize(sentence):
+    return sentence.split()
+
+# Step 2: Define a basic POS tagger
+def pos_tag(tokens):
+    pos_tags = []
+    for token in tokens:
+        if token.lower() in ["the", "a", "an"]:
+            pos_tags.append((token, "DET"))
+        elif token.lower() in ["cat", "mouse", "dog", "fox"]:
+            pos_tags.append((token, "NOUN"))
+        elif token.lower() in ["chased", "jumps", "runs"]:
+            pos_tags.append((token, "VERB"))
+        else:
+            pos_tags.append((token, "UNK"))
+    return pos_tags
+
+# Step 3: Simplified dependency parsing based on basic rules
+def dependency_parse(pos_tags):
+    dependencies = []
+    for i, (word, pos) in enumerate(pos_tags):
+        if pos == "VERB":
+            verb_index = i
+            # Find the subject (NOUN before VERB)
+            for j in range(verb_index - 1, -1, -1):
+                if pos_tags[j][1] == "NOUN":
+                    dependencies.append((pos_tags[j][0], "subj", word))
+                    break
+            # Find the object (NOUN after VERB)
+            for j in range(verb_index + 1, len(pos_tags)):
+                if pos_tags[j][1] == "NOUN":
+                    dependencies.append((word, "obj", pos_tags[j][0]))
+                    break
+    return dependencies
+
+# Execute the steps
+tokens = tokenize(sentence)
+pos_tags = pos_tag(tokens)
+dependencies = dependency_parse(pos_tags)
+
+# Print the dependencies
+for dep in dependencies:
+    print(f"{dep[0]} -> {dep[1]} -> {dep[2]}")
+
+word freq
+import string
+
+# Sample text
+text = """
+The cat chased the mouse around the house. Birds fly high in the sky. The quick brown fox jumps over the lazy dog.
+"""
+
+# Step 1: Tokenize the text
+def tokenize(text):
+    # Convert to lowercase
+    text = text.lower()
+    # Remove punctuation
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    # Split into words
+    words = text.split()
+    return words
+
+# Step 2: Count word frequencies
+def count_word_frequencies(words):
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+            word_freq[word] += 1
+        else:
+            word_freq[word] = 1
+    return word_freq
+
+# Step 3: Remove stop words
+stop_words = set(["the", "is", "in", "a", "an", "of", "and", "to", "it", "around", "over"])
+
+def remove_stop_words(word_freq):
+    filtered_word_freq = {word: count for word, count in word_freq.items() if word not in stop_words}
+    return filtered_word_freq
+
+# Execute the steps
+words = tokenize(text)
+word_freq = count_word_frequencies(words)
+filtered_word_freq = remove_stop_words(word_freq)
+
+# Print the word frequencies
+for word, freq in filtered_word_freq.items():
+    print(f"'{word}': {freq}")
+
