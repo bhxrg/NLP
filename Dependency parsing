@@ -31,12 +31,18 @@ def dependency_parsing(corpus):
 parsed_corpus1 = dependency_parsing(corpus1)
 parsed_corpus2 = dependency_parsing(corpus2)
 
-# Print parsed dependencies for Corpus 1
-print("Parsed Dependencies for Corpus 1:")
-for i, dependencies in enumerate(parsed_corpus1):
-    print(f"Sentence {i+1}: {dependencies}")
+# Function to print dependencies with arrows
+def print_dependencies_with_arrows(parsed_corpus):
+    for i, dependencies in enumerate(parsed_corpus):
+        print(f"Sentence {i+1}:")
+        for dependency in dependencies:
+            print(f"{dependency[1]} -> {dependency[0]}")
+        print()
 
-# Print parsed dependencies for Corpus 2
+# Print parsed dependencies with arrows for Corpus 1
+print("Parsed Dependencies for Corpus 1:")
+print_dependencies_with_arrows(parsed_corpus1)
+
+# Print parsed dependencies with arrows for Corpus 2
 print("\nParsed Dependencies for Corpus 2:")
-for i, dependencies in enumerate(parsed_corpus2):
-    print(f"Sentence {i+1}: {dependencies}")
+print_dependencies_with_arrows(parsed_corpus2)
