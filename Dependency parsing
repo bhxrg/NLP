@@ -1,0 +1,42 @@
+# Define the corpora
+corpus1 = "The cat chased the mouse around the house. The mouse squeaked loudly in response."
+corpus2 = "John went to the store and bought some groceries. He then returned home to cook dinner for his family."
+
+# Define a function for dependency parsing
+def dependency_parsing(corpus):
+    # Split the corpus into sentences using '. ' as the delimiter
+    sentences = corpus.split('. ')
+    parsed_sentences = []
+
+    # Loop through each sentence
+    for sentence in sentences:
+        # Split the sentence into tokens (words)
+        tokens = sentence.split()
+        dependencies = []
+
+        # Simple dependency rules (for illustration)
+        for i in range(len(tokens)):
+            if i > 0:
+                # Create a dependency between the current token and the previous token
+                dependency = (tokens[i], tokens[i-1])
+                dependencies.append(dependency)
+
+        # Add the list of dependencies for the current sentence to the parsed_sentences list
+        parsed_sentences.append(dependencies)
+
+    # Return the list of parsed sentences
+    return parsed_sentences
+
+# Perform dependency parsing on both corpora
+parsed_corpus1 = dependency_parsing(corpus1)
+parsed_corpus2 = dependency_parsing(corpus2)
+
+# Print parsed dependencies for Corpus 1
+print("Parsed Dependencies for Corpus 1:")
+for i, dependencies in enumerate(parsed_corpus1):
+    print(f"Sentence {i+1}: {dependencies}")
+
+# Print parsed dependencies for Corpus 2
+print("\nParsed Dependencies for Corpus 2:")
+for i, dependencies in enumerate(parsed_corpus2):
+    print(f"Sentence {i+1}: {dependencies}")
