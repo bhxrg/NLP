@@ -408,6 +408,28 @@ print("\nExtractive Summary of Excerpt 2:")
 print(summary2)
 
 
+def extractive_summary(text):
+    # Split the text into sentences
+    sentence1 = text.split(',')
+    sentence2 = text.split('.')
+    summary = sentence1[0]+"."+sentence2[1]
+    
+    return summary
+
+# Provided excerpts
+excerpt1 = "The Prime Minister announced new measures to tackle climate change, including a commitment to reduce carbon emissions by 50% by 2030. The plan also includes significant investments in renewable energy and public transportation."
+excerpt2 = "In a groundbreaking medical procedure, surgeons successfully performed a heart transplant using a donor heart that had been kept viable outside the body for 12 hours. This innovation could potentially increase the availability of donor organs for patients in need."
+
+# Generate extractive summaries (first 2 sentences)
+summary1 = extractive_summary(excerpt1)
+summary2 = extractive_summary(excerpt2)
+
+print("Extractive Summary of Excerpt 1:")
+print(summary1)
+
+print("\nExtractive Summary of Excerpt 2:")
+print(summary2)
+
 # ## text classification(4th)
 
 # In[13]:
