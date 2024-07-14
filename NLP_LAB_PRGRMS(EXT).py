@@ -136,35 +136,15 @@ for token, tag in zip(tokens2, tags2):
 
 import re
 
-# Define the corpus
-corpus = {
-    1: "The Great Wall of China is a series of fortifications made of stone, brick, tamped earth, wood, and other materials, generally built along an east-to-west line across the historical northern borders of China. It was built to protect the Chinese states and empires against the raids and invasions of the various nomadic groups of the Eurasian Steppe.",
-    2: "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower. Constructed from 1887 to 1889 as the entrance to the 1889 World's Fair, it was initially criticized by some of France's leading artists and intellectuals for its design, but it has become a global cultural icon of France and one of the most recognizable structures in the world."
-}
+def question_answer(question):
+    corpus = {
+        'great_wall': "The Great Wall of China is a series of fortifications made of stone, brick, tamped earth, wood, and other materials, generally built along an east-to-west line across the historical northern borders of China. It was built to protect the Chinese states and empires against the raids and invasions of the various nomadic groups of the Eurasian Steppe.",
+        'eiffel tower': "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower. Constructed from 1887 to 1889 as the entrance to the 1889 World's Fair, it was initially criticized by some of France's leading artists and intellectuals for its design, but it has become a global cultural icon of France and one of the most recognizable structures in the world."
+    }
+    
+    question = question.lower()
 
-# Tokenize corpus into sentences
-def tokenize_sentences(corpus):
-    sentences = {}
-    for key, text in corpus.items():
-        sentences[key] = re.split(r'(?<=\w[.!?]) +', text)
-    return sentences
 
-# Extract keywords from the question
-def extract_keywords(question):
-    keywords = re.findall(r'\b\w+\b', question.lower())
-    return keywords
-
-# Find the most relevant sentence in the corpus
-def find_relevant_sentence(keywords, sentences):
-    for key in sentences:
-        for sentence in sentences[key]:
-            if all(keyword in sentence.lower() for keyword in keywords):
-                return sentence
-    return None
-
-# Function to answer questions based on the given context
-def answer_question(question, corpus, sentences):
-    keywords = extract_keywords(question)
     if "what materials were used to build the great wall of china" in question.lower():
         return "The Great Wall of China is made of stone, brick, tamped earth, wood, and other materials."
     elif "who designed and built the eiffel tower" in question.lower():
@@ -178,9 +158,6 @@ def answer_question(question, corpus, sentences):
     else:
         return "I don't know the answer to that question."
 
-# Tokenize the corpus into sentences
-sentences = tokenize_sentences(corpus)
-
 # Example questions
 questions = [
     "What materials were used to build the Great Wall of China?",
@@ -192,10 +169,9 @@ questions = [
 
 # Answer the questions
 for question in questions:
-    answer = answer_question(question, corpus, sentences)
+    answer = question_answer(question)
     print(f"Question: {question}")
     print(f"Answer: {answer}\n")
-
 
 # ## 7
 
