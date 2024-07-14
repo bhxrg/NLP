@@ -47,7 +47,8 @@ def dependency_parse(tags):
                 if tags[j][1] == 'NOUN':
                     obj = tags[j][0]
                     break
-            parse.append((subject, word, obj))
+            if subject and obj:
+                parse.append(f"{subject.capitalize()} -> {word} -> {obj.capitalize()}")
     return parse
 
 # Function to process a corpus
@@ -59,18 +60,21 @@ def process_corpus(corpus):
             tokens = tokenize(sentence)
             tags = pos_tag(tokens)
             parse = dependency_parse(tags)
-            all_parses.append(parse)
+            all_parses.extend(parse)
     return all_parses
 
 # Corpus 1
 corpus1 = "The cat chased the mouse around the house. The mouse squeaked loudly in response."
 print("Corpus 1 Parse:")
-print(process_corpus(corpus1))
+for parse in process_corpus(corpus1):
+    print(parse)
 
 # Corpus 2
 corpus2 = "John went to the store and bought some groceries. He then returned home to cook dinner for his family."
 print("Corpus 2 Parse:")
-print(process_corpus(corpus2))
+for parse in process_corpus(corpus2):
+    print(parse)
+    
 
 
 # ## pos tags(9th)
