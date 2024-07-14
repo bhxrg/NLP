@@ -80,99 +80,55 @@ for parse in process_corpus(corpus2):
 # ## pos tags(9th)
 
 # In[3]:
-
-
-import re
-
-# A simplified dictionary of words and their corresponding POS tags based on the Penn Treebank tag set
-simple_pos_dict = {
-    'The': 'DT',
-    'committee': 'NN',
-    'committee\'s': 'NN',
-    'chairman': 'NN',
-    'Mr.': 'NNP',
-    'Smith': 'NNP',
-    'reported': 'VBD',
-    'that': 'IN',
-    'the': 'DT',
-    'bill': 'NN',
-    'would': 'MD',
-    'be': 'VB',
-    'ready': 'JJ',
-    'for': 'IN',
-    'a': 'DT',
-    'vote': 'NN',
-    'by': 'IN',
-    'next': 'JJ',
-    'week': 'NN',
-    'He': 'PRP',
-    'expressed': 'VBD',
-    'confidence': 'NN',
-    'proposed': 'VBN',
-    'legislation': 'NN',
-    'receive': 'VB',
-    'broad': 'JJ',
-    'bipartisan': 'JJ',
-    'support': 'NN',
-    'company\'s': 'NN',
-    'quarterly': 'JJ',
-    'earnings': 'NNS',
-    'report': 'NN',
-    'revealed': 'VBD',
-    'significant': 'JJ',
-    'increase': 'NN',
-    'in': 'IN',
-    'revenue': 'NN',
-    'driven': 'VBN',
-    'by': 'IN',
-    'strong': 'JJ',
-    'sales': 'NNS',
-    'technology': 'NN',
-    'sector': 'NN',
-    'Investors': 'NNS',
-    'responded': 'VBD',
-    'positively': 'RB',
-    'pushing': 'VBG',
-    'stock': 'NN',
-    'price': 'NN',
-    'new': 'JJ',
-    'high': 'JJ',
-}
-
-# Function to tokenize sentences into words
-def tokenize(sentence):
-    return re.findall(r'\b\w+\'?\w*\b', sentence)
-
-# Function to perform POS tagging using the simplified dictionary
-def pos_tag(tokens):
-    tags = []
+def pos_tagging(tokens):
+    pos_tags = []
     for token in tokens:
-        tag = simple_pos_dict.get(token, 'NN')  # Default to 'NN' if the word is not in the dictionary
-        tags.append((token, tag))
-    return tags
+        if token.lower() in {'the', 'a', 'an'}:
+            pos_tags.append('DET')  # Determiner
+        elif token.endswith('s') and token.lower() != 'is':
+            pos_tags.append('NOUN')
+        elif token.endswith('er'):
+            # Check if it could be a comparative adjective or a noun
+            if len(token) > 2 and token[-3].isalpha():  # More robust check
+                pos_tags.append('NOUN')
+            else:
+                pos_tags.append('ADJ')
+        elif token.endswith('ing'):
+            pos_tags.append('VERB')
+        elif token.endswith('ed'):
+            pos_tags.append('VERB' if token.lower() in {'is', 'am', 'are', 'was', 'were', 'be', 'being', 'been'} else 'ADJ')
+        elif token.endswith('ly'):
+            pos_tags.append('ADV')
+        elif token.lower() in {'is', 'am', 'are', 'was', 'were', 'be', 'being', 'been'}:
+            pos_tags.append('AUX')
+        else:
+            pos_tags.append('NOUN')  # Unknown or unhandled cases
 
-# Function to process a corpus
-def process_corpus(corpus):
-    sentences = re.split(r'\.|\?', corpus)
-    all_tags = []
-    for sentence in sentences:
-        if sentence.strip():
-            tokens = tokenize(sentence)
-            tags = pos_tag(tokens)
-            all_tags.append(tags)
-    return all_tags
+    return pos_tags
 
-# Corpus Excerpts
+
 corpus1 = "The committee's chairman, Mr. Smith, reported that the bill would be ready for a vote by next week. He expressed confidence that the proposed legislation would receive broad bipartisan support."
 corpus2 = "The company's quarterly earnings report revealed a significant increase in revenue, driven by strong sales in the technology sector. Investors responded positively, pushing the stock price to a new high."
 
-print("Corpus 1 POS Tags:")
-print(process_corpus(corpus1))
 
-print("\nCorpus 2 POS Tags:")
-print(process_corpus(corpus2))
+tokens1 = tokenize(corpus1)
+tags1 = pos_tagging(tokens1)
 
 
+tokens2 = tokenize(corpus2)
+tags2 = pos_tagging(tokens2)
+
+# Print tokens with their POS tags
+print("CORPUS1")
+for token, tag in zip(tokens1, tags1):
+    print(f"{token}: {tag}")
+
+print()
+# Print tokens with their POS tags
+print("CORPUS2")
+for token, tag in zip(tokens2, tags2):
+    print(f"{token}: {tag}")
+    
 # ## Q & A Model (8th)
 
 # In[9]:
